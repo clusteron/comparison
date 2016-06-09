@@ -30,4 +30,4 @@ import astropy
 # perform 3D RA, Dec, z match (configurable delta z)
 
 # plot comparing richness
-
+# plot comparing richness vs z

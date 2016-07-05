@@ -1,6 +1,6 @@
 
+
 import numpy as np
-import matplotlib.pyplot as plt
 import astropy
 from astropy.io import ascii
 from astropy.io import fits
@@ -9,6 +9,7 @@ from astropy import units as u
 import pylab
 from pylab import plot
 from astropy.cosmology import WMAP9 as cosmo
+%pylab
 
 print 'Reading files'
 w = ascii.read('wen.csv') 
@@ -31,6 +32,15 @@ print 'match to catalog sky'
 idx, d2d, d3d = cr.match_to_catalog_sky(cw) 
 #print idx, d2d, d3d 
 
+print 'Plot ra x dec - sky'
+ra_w = w['RAJ2000']*u.deg
+dec_w = w['DEJ2000']*u.deg
+pylab.plot(ra_w, dec_w, 'ro', label = 'Wen'),pylab.legend()
+
+ra_r = r['RA']*u.deg 
+dec_r = r['DEC']*u.deg
+pylab.plot(ra_r, dec_r, 'bs', label = 'Redmapper'), pylab.xlabel('RA'), pylab.ylabel('DEC'), pylab.legend(),  pylab.title('Plotx Wen x Redmapper'), savefig('Plot-Sky.png'), close()
+ 
 print 'catalog with values RA, DEC and z'
 c_w = SkyCoord(ra = w['RAJ2000']*u.deg, dec = w['DEJ2000']*u.deg, distance = cosmo.comoving_distance(w['zph'])) 
 c_r = SkyCoord(ra = r['RA']*u.deg, dec = r['DEC']*u.deg, distance = cosmo.comoving_distance(r['Z_LAMBDA'])) 

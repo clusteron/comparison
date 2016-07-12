@@ -10,6 +10,8 @@ import pylab
 from pylab import plot
 from astropy.cosmology import WMAP9 as cosmo
 %pylab
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
 
 print 'Reading files'
 w = ascii.read('wen.csv') 
@@ -44,6 +46,38 @@ pylab.plot(ra_r, dec_r, 'bs', label = 'Redmapper'), pylab.xlabel('RA'), pylab.yl
 print 'catalog with values RA, DEC and z'
 c_w = SkyCoord(ra = w['RAJ2000']*u.deg, dec = w['DEJ2000']*u.deg, distance = cosmo.comoving_distance(w['zph'])) 
 c_r = SkyCoord(ra = r['RA']*u.deg, dec = r['DEC']*u.deg, distance = cosmo.comoving_distance(r['Z_LAMBDA'])) 
+
+print 'Plot ra, dec and z - 3d'
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+x = [w['RAJ2000']]
+y = [w['DEJ2000']]
+z = [w['zph']]
+
+ax.scatter(x,y,z, c='r', marker = 'o')
+
+ax.set_xlabel('RA')
+ax.set_ylabel('DEC')
+ax.set_zlabel('z')
+
+savefig('Plot-3d-Wen.png'), close()
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+a = [r['RA']]
+b = [r['DEC']]
+c = [r['Z_LAMBDA']]
+
+ax.scatter(a,b,c, c='b', marker = 's')
+
+ax.set_xlabel('RA')
+ax.set_ylabel('DEC')
+ax.set_zlabel('z')
+
+savefig('Plot-3d-Red.png'), close()
 
 print 'match to catalog 3d'
 idx, d2d, d3d = c_w.match_to_catalog_3d(c_r) 
